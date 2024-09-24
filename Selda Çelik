@@ -137,10 +137,20 @@ order by unitprice DESC
 97. Hangi siparişte toplam ne kadar kazanmışım..?
 98. Hangi kategoride toplam kaç adet ürün bulunuyor..?
 99. 1000 Adetten fazla satılan ürünler?
+
 100. Hangi Müşterilerim hiç sipariş vermemiş..?
+SELECT Customers.CustomerID, Customers.CompanyName
+FROM Customers
+LEFT JOIN Orders ON Customers.CustomerID = Orders.CustomerID
+WHERE Orders.OrderID IS NULL;
+
 101. Hangi tedarikçi hangi ürünü sağlıyor ?
 102. Hangi sipariş hangi kargo şirketi ile ne zaman gönderilmiş..?
 103. Hangi siparişi hangi müşteri verir..?
+SELECT Orders.OrderID, Customers.CustomerID, Customers.CompanyName
+FROM Orders
+JOIN Customers ON Orders.CustomerID = Customers.CustomerID;
+
 104. Hangi çalışan, toplam kaç sipariş almış..?
 105. En fazla siparişi kim almış..?
 106. Hangi siparişi, hangi çalışan, hangi müşteri vermiştir..?
@@ -157,7 +167,13 @@ order by unitprice DESC
 117. Personellerin ad,soyad ve yaş bilgilerini listeleyiniz.
 118. 35 gün içinde sevk edilmeyen satışları listeleyiniz.
 119. Birim fiyatı en yüksek olan ürünün kategori adını listeleyiniz. (Alt Sorgu)
+SELECT categoryname from Categories 
+where categoryid = (SELECT categoryid from Products
+                   order by unitprice DESC
+                   LIMIT 1) 
 120. Kategori adında 'on' geçen kategorilerin ürünlerini listeleyiniz. (Alt Sorgu)
+SELECT * from Products where categoryid = (select categoryid from Categories where categoryname like '%on%')
+
 121. Konbu adlı üründen kaç adet satılmıştır.
 122. Japonyadan kaç farklı ürün tedarik edilmektedir.
 123. 1997 yılında yapılmış satışların en yüksek, en düşük ve ortalama nakliye ücretlisi ne kadardır?
